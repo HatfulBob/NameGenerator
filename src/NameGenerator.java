@@ -13,6 +13,12 @@ public class NameGenerator {
 	public static ObjectOutputStream outputStream = null;
 	public static ObjectInputStream inputStream;
 
+	public static boolean addNickname = true;
+	public static boolean addSurname = false;
+	
+	public static String namesFile = "src/names.txt";
+	public static String nicknameFile = "src/adjectives.txt";
+
 	public static void main(String[] args) {
 		sort("src/adjectives.txt");
 		generateNames("output.txt");
@@ -33,7 +39,6 @@ public class NameGenerator {
 			}
 			buffer2.close();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		Collections.sort(adjectives, String.CASE_INSENSITIVE_ORDER);
@@ -57,7 +62,7 @@ public class NameGenerator {
 		ArrayList<String> output = new ArrayList<String>();
 		int i = 0;
 		try {
-			FileReader file = new FileReader("src/names.txt");
+			FileReader file = new FileReader(namesFile);
 			BufferedReader buffer = new BufferedReader(file);
 			String line = "";
 			while ((line = buffer.readLine()) != null) {
@@ -65,7 +70,7 @@ public class NameGenerator {
 				i++;
 			}
 			buffer.close();
-			FileReader file2 = new FileReader("src/adjectives.txt");
+			FileReader file2 = new FileReader(nicknameFile);
 			BufferedReader buffer2 = new BufferedReader(file2);
 			line = "";
 			i = 0;
@@ -82,9 +87,12 @@ public class NameGenerator {
 			for (int b = 0; b < adjectives.size(); b++) {
 				char y = Character.valueOf(adjectives.get(b).charAt(0));
 				if (y == c) {
-					String f = "\"''\"";
-					f = f + adjectives.get(b);
-					f = f + "\" ";
+					String f = "";
+					if (addNickname) {
+						f = "\"";
+						f = f + adjectives.get(b);
+						f = f + "\" ";
+					}
 					f = f + names.get(a);
 					output.add(f);
 				}
@@ -104,6 +112,5 @@ public class NameGenerator {
 			System.out.println("A write error has occurred.");
 		}
 	}
-
 
 }
