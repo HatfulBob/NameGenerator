@@ -1,5 +1,6 @@
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -7,6 +8,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Random;
 
 public class NameGenerator {
 
@@ -15,13 +17,14 @@ public class NameGenerator {
 
 	public static boolean addNickname = true;
 	public static boolean addSurname = false;
-	
+
 	public static String namesFile = "src/names.txt";
 	public static String nicknameFile = "src/adjectives.txt";
+	public static String outputFile = "output.txt";
 
 	public static void main(String[] args) {
-		sort("src/adjectives.txt");
-		generateNames("output.txt");
+		sort(nicknameFile);
+		generateNames(outputFile);
 	}
 
 	public static void sort(String filename) {
@@ -111,6 +114,34 @@ public class NameGenerator {
 		} catch (IOException e) {
 			System.out.println("A write error has occurred.");
 		}
+	}
+
+	public String[] generateNames(int numberOfNames) {
+		// generate a random list of names
+		if (!new File(outputFile).exists()) {
+			generateNames(outputFile);
+		}
+		String[] output = new String[numberOfNames];
+		Random r = new Random();
+		//load possible names
+		ArrayList<String> names = new ArrayList<String>();
+		try {
+			FileReader file = new FileReader(namesFile);
+			BufferedReader buffer = new BufferedReader(file);
+			String line = "";
+			while ((line = buffer.readLine()) != null) {
+				names.add(line);
+			}
+			buffer.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		//get random names
+		for (int i = 0; i < output.length; i++) {
+			output[i]=names.get(r.nextInt(names.size()));
+		}
+		return output;
 	}
 
 }
