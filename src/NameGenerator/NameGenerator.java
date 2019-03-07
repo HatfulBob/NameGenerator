@@ -1,3 +1,5 @@
+package NameGenerator;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -116,7 +118,7 @@ public class NameGenerator {
 		}
 	}
 
-	public String[] generateNames(int numberOfNames) {
+	public static String[] generateNames(int numberOfNames) {
 		// generate a random list of names
 		if (!new File(outputFile).exists()) {
 			generateNames(outputFile);
